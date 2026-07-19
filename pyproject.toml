@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gdpr-omni-scanner"
+version = "0.7.0"
+description = "Offline personal-data exposure scanner for the CM3070 final project"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "click>=8.1,<9",
+    "pillow>=10,<13",
+    "pytesseract>=0.3.10,<0.4",
+    "spacy>=3.7,<4",
+    "openai-whisper==20250625",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+    "pytest-cov>=5,<7",
+]
+image-comparison = [
+    "easyocr==1.7.2",
+]
+
+[project.scripts]
+gdpr-scan = "gdpr_scanner.cli:main"
+gdpr-evaluate-text = "gdpr_scanner.evaluate_cli:main"
+gdpr-evaluate-audio = "gdpr_scanner.audio_evaluate_cli:main"
+gdpr-evaluate-image = "gdpr_scanner.image_evaluate_cli:main"
+gdpr-evaluate-image-pipeline = "gdpr_scanner.image_pipeline_evaluate_cli:main"
+gdpr-prepare-enron = "gdpr_scanner.enron_prep:main"
+gdpr-annotate-enron = "gdpr_scanner.annotation_cli:main"
+gdpr-prepare-funsd = "gdpr_scanner.funsd_prep:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "model: test that requires the installed spaCy English model",
+    "ocr: test that requires the installed Tesseract English OCR model",
+    "audio: test that requires FFmpeg and the installed Whisper tiny.en model",
+]
+
+[tool.coverage.run]
+source = ["gdpr_scanner"]

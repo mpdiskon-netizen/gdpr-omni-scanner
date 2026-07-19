@@ -1,0 +1,6 @@
+Synthetic demonstration record - not a real person.
+
+Alex Morgan lives in Malta and can be contacted at alex@example.test or +356 2123 4567.
+Test network address: 192.0.2.1.
+Published validation examples: GB82 WEST 1234 5698 7654 32 and 4111 1111 1111 1111.
+

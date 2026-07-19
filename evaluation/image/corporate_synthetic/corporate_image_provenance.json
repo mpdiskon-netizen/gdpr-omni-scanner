@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "name": "Controlled corporate image set v1",
+  "seed": 3070,
+  "case_count": 20,
+  "purpose": "Controlled OCR and end-to-end finding evaluation",
+  "content": "Fictional identifiers and reserved test values only",
+  "generator": "generate_corporate_images.py",
+  "background_asset": "assets/office_surface.png",
+  "background_sha256": "6a3930b14b4d9616f536810729f9b2d25d3e913f644704dbb780e385d9f9c669",
+  "cases": [
+    {
+      "id": "corp-01-badge",
+      "document_class": "employee_badge",
+      "image_sha256": "fd67b9c9dd42121cf29e3d8256b3ffe23b01e545af743864c27a98daa5af8c81"
+    },
+    {
+      "id": "corp-02-visitor",
+      "document_class": "visitor_pass",
+      "image_sha256": "62ee6358f4e788bc9c6a6b634e846c337469635fc4a581b7adb5342a6ab515c3"
+    },
+    {
+      "id": "corp-03-sticky",
+      "document_class": "handwritten_note",
+      "image_sha256": "aea9feb1dd7967c84785789305ddf573bdcefbede919e2c54b81b6da91a53813"
+    },
+    {
+      "id": "corp-04-meeting",
+      "document_class": "handwritten_meeting_note",
+      "image_sha256": "491373766807957b942ace3c1a6228284868435775b1314c61c9c872edc61c32"
+    },
+    {
+      "id": "corp-05-card",
+      "document_class": "business_card",
+      "image_sha256": "47952c7e475e48cce704cb0768b89b1689e54e801fa7d67edd63506c778be03b"
+    },
+    {
+      "id": "corp-06-hr",
+      "document_class": "hr_form",
+      "image_sha256": "839669ae35766740717bcc73485fdae8bca1ed67cf9120faaab4f04f2b61d152"
+    },
+    {
+      "id": "corp-07-expense",
+      "document_class": "expense_attachment",
+      "image_sha256": "6d27136d432c9fe0fd16e25e1b6663d1e1af7dded98542e137b2dbac6e14ff53"
+    },
+    {
+      "id": "corp-08-incident",
+      "document_class": "incident_report",
+      "image_sha256": "aa403ac449fdde9f802258ab7b94b25879809ff8a502352a21c0e08d8fe0ccb8"
+    },
+    {
+      "id": "corp-09-it",
+      "document_class": "it_access_sheet",
+      "image_sha256": "1924a06fbe1ccf891750c513fc19dd6d90a5b32e83d14df3688a9c193999186c"
+    },
+    {
+      "id": "corp-10-label",
+      "document_class": "courier_label",
+      "image_sha256": "efd594de812f41452e66820867cee5b346d0e1f75c11a73e4db29c3270d92737"
+    },
+    {
+      "id": "corp-11-whiteboard",
+      "document_class": "whiteboard_photo",
+      "image_sha256": "bf0701701b3b467ca91cfab8adab5e4ba6a372154f2e795119ea563423bcc33f"
+    },
+    {
+      "id": "corp-12-signin",
+      "document_class": "sign_in_sheet",
+      "image_sha256": "5818da115af9b12a32645ddcb33d9dd724ace72790f5f014f93f5401121c77ff"
+    },
+    {
+      "id": "corp-13-contacts",
+      "document_class": "contact_sheet",
+      "image_sha256": "7fd14c422aca5528c1d9efefc58367154ac8fac13afecd723be84b133e96a45c"
+    },
+    {
+      "id": "corp-14-finance",
+      "document_class": "finance_form",
+      "image_sha256": "377ce29bba3174d87a0f2b304ff01df1319fab2e6d19380c9e6445c2d04ab6ec"
+    },
+    {
+      "id": "corp-15-callback",
+      "document_class": "handwritten_callback_note",
+      "image_sha256": "7db35444f33a582be19a9d20299b4518c931507262582333bafa0b9f34df70fa"
+    },
+    {
+      "id": "corp-16-security",
+      "document_class": "security_return_form",
+      "image_sha256": "b32d9ddc5455a4ef7e89beb0470d80e1925d9ea25fb86d867dead59f89ce91e4"
+    },
+    {
+      "id": "corp-17-fax",
+      "document_class": "fax_cover",
+      "image_sha256": "975ff9d0027b887847d3afc12a421849276c5d6489ebcf8dabe9c3fea7350d6e"
+    },
+    {
+      "id": "corp-18-training",
+      "document_class": "attendance_sheet",
+      "image_sha256": "05a641434d6099004628ccf720054fdd068c5c1956d3d01cd58c4b225bdcd359"
+    },
+    {
+      "id": "corp-19-handover",
+      "document_class": "asset_handover",
+      "image_sha256": "972afeac25db6db61c4ee89075e494b51b5a8f64374a7eae2551dac21fe0ed79"
+    },
+    {
+      "id": "corp-20-emergency",
+      "document_class": "emergency_contact_card",
+      "image_sha256": "472f12b6256613d747b335090f596aec9a64b0d97404acd1c7bf53acd7a1d6a0"
+    }
+  ]
+}

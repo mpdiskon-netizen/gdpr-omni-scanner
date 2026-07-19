@@ -1,0 +1,71 @@
+{
+  "evaluation_schema_version": "1.0",
+  "matching": "exact finding type and normalized value; occurrence-aware",
+  "case_count": 4,
+  "micro": {
+    "true_positives": 7,
+    "false_positives": 1,
+    "false_negatives": 0,
+    "precision": 0.875,
+    "recall": 1.0,
+    "f1": 0.9333
+  },
+  "per_type": {
+    "EMAIL_ADDRESS": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "IBAN": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "IP_ADDRESS": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "LOCATION_REFERENCE": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "PAYMENT_CARD_NUMBER": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "PERSON_NAME": {
+      "true_positives": 1,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667
+    },
+    "PHONE_NUMBER": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  }
+}

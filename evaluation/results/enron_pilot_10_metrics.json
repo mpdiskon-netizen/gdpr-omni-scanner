@@ -1,0 +1,47 @@
+{
+  "evaluation_schema_version": "1.0",
+  "matching": "exact finding type and normalized value; occurrence-aware",
+  "case_count": 10,
+  "micro": {
+    "true_positives": 102,
+    "false_positives": 17,
+    "false_negatives": 13,
+    "precision": 0.8571,
+    "recall": 0.887,
+    "f1": 0.8718
+  },
+  "per_type": {
+    "EMAIL_ADDRESS": {
+      "true_positives": 60,
+      "false_positives": 0,
+      "false_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.9231,
+      "f1": 0.96
+    },
+    "LOCATION_REFERENCE": {
+      "true_positives": 1,
+      "false_positives": 5,
+      "false_negatives": 0,
+      "precision": 0.1667,
+      "recall": 1.0,
+      "f1": 0.2857
+    },
+    "PERSON_NAME": {
+      "true_positives": 39,
+      "false_positives": 12,
+      "false_negatives": 8,
+      "precision": 0.7647,
+      "recall": 0.8298,
+      "f1": 0.7959
+    },
+    "PHONE_NUMBER": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  }
+}

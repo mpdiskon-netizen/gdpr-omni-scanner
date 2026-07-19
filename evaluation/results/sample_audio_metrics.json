@@ -1,0 +1,37 @@
+{
+  "evaluation_schema_version": "1.1",
+  "metric": "word error rate = (substitutions + deletions + insertions) / reference words",
+  "normalisation": "English case-folding; punctuation ignored; apostrophes removed",
+  "timing": "Wall-clock transcription time; first case includes model loading",
+  "case_count": 1,
+  "models": [
+    "whisper:tiny.en:20250625:cpu"
+  ],
+  "aggregate": {
+    "substitutions": 0,
+    "deletions": 0,
+    "insertions": 0,
+    "reference_words": 15,
+    "hypothesis_words": 15,
+    "word_error_rate": 0.0,
+    "total_processing_seconds": 1.8053,
+    "mean_processing_seconds": 1.8053,
+    "total_audio_seconds": 5.91,
+    "real_time_factor": 0.3055
+  },
+  "per_case": [
+    {
+      "id": "synthetic-speech-wav",
+      "audio_path": "../../sample_data/synthetic_speech.wav",
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "reference_words": 15,
+      "hypothesis_words": 15,
+      "word_error_rate": 0.0,
+      "processing_seconds": 1.8053,
+      "audio_duration_seconds": 5.91,
+      "real_time_factor": 0.3055
+    }
+  ]
+}

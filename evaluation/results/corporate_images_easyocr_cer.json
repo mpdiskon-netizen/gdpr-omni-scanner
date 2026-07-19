@@ -1,0 +1,223 @@
+{
+  "evaluation_schema_version": "1.0",
+  "metric": "character error rate = Levenshtein edit distance / reference characters",
+  "normalisation": "Unicode NFKC; case-folding; whitespace collapsed",
+  "timing": "Wall-clock OCR time",
+  "case_count": 20,
+  "datasets": [
+    "Controlled corporate image set v1"
+  ],
+  "models": [
+    "easyocr:en:1.7.2:cpu"
+  ],
+  "aggregate": {
+    "edit_distance": 33,
+    "reference_characters": 1636,
+    "hypothesis_characters": 1628,
+    "character_error_rate": 0.0202,
+    "total_processing_seconds": 228.936,
+    "mean_processing_seconds": 11.4468
+  },
+  "per_case": [
+    {
+      "id": "corp-01-badge",
+      "image_path": "images/corp-01-badge.png",
+      "document_class": "employee_badge",
+      "edit_distance": 1,
+      "reference_characters": 60,
+      "hypothesis_characters": 60,
+      "character_error_rate": 0.0167,
+      "processing_seconds": 17.396
+    },
+    {
+      "id": "corp-02-visitor",
+      "image_path": "images/corp-02-visitor.png",
+      "document_class": "visitor_pass",
+      "edit_distance": 0,
+      "reference_characters": 62,
+      "hypothesis_characters": 62,
+      "character_error_rate": 0.0,
+      "processing_seconds": 13.1631
+    },
+    {
+      "id": "corp-03-sticky",
+      "image_path": "images/corp-03-sticky.png",
+      "document_class": "handwritten_note",
+      "edit_distance": 1,
+      "reference_characters": 56,
+      "hypothesis_characters": 55,
+      "character_error_rate": 0.0179,
+      "processing_seconds": 13.1886
+    },
+    {
+      "id": "corp-04-meeting",
+      "image_path": "images/corp-04-meeting.png",
+      "document_class": "handwritten_meeting_note",
+      "edit_distance": 3,
+      "reference_characters": 76,
+      "hypothesis_characters": 74,
+      "character_error_rate": 0.0395,
+      "processing_seconds": 13.576
+    },
+    {
+      "id": "corp-05-card",
+      "image_path": "images/corp-05-card.png",
+      "document_class": "business_card",
+      "edit_distance": 1,
+      "reference_characters": 77,
+      "hypothesis_characters": 77,
+      "character_error_rate": 0.013,
+      "processing_seconds": 7.7061
+    },
+    {
+      "id": "corp-06-hr",
+      "image_path": "images/corp-06-hr.png",
+      "document_class": "hr_form",
+      "edit_distance": 1,
+      "reference_characters": 111,
+      "hypothesis_characters": 111,
+      "character_error_rate": 0.009,
+      "processing_seconds": 10.1957
+    },
+    {
+      "id": "corp-07-expense",
+      "image_path": "images/corp-07-expense.png",
+      "document_class": "expense_attachment",
+      "edit_distance": 1,
+      "reference_characters": 102,
+      "hypothesis_characters": 101,
+      "character_error_rate": 0.0098,
+      "processing_seconds": 10.3811
+    },
+    {
+      "id": "corp-08-incident",
+      "image_path": "images/corp-08-incident.png",
+      "document_class": "incident_report",
+      "edit_distance": 0,
+      "reference_characters": 107,
+      "hypothesis_characters": 107,
+      "character_error_rate": 0.0,
+      "processing_seconds": 13.1513
+    },
+    {
+      "id": "corp-09-it",
+      "image_path": "images/corp-09-it.png",
+      "document_class": "it_access_sheet",
+      "edit_distance": 2,
+      "reference_characters": 97,
+      "hypothesis_characters": 98,
+      "character_error_rate": 0.0206,
+      "processing_seconds": 10.8979
+    },
+    {
+      "id": "corp-10-label",
+      "image_path": "images/corp-10-label.png",
+      "document_class": "courier_label",
+      "edit_distance": 0,
+      "reference_characters": 77,
+      "hypothesis_characters": 77,
+      "character_error_rate": 0.0,
+      "processing_seconds": 10.6139
+    },
+    {
+      "id": "corp-11-whiteboard",
+      "image_path": "images/corp-11-whiteboard.png",
+      "document_class": "whiteboard_photo",
+      "edit_distance": 13,
+      "reference_characters": 73,
+      "hypothesis_characters": 73,
+      "character_error_rate": 0.1781,
+      "processing_seconds": 13.168
+    },
+    {
+      "id": "corp-12-signin",
+      "image_path": "images/corp-12-signin.png",
+      "document_class": "sign_in_sheet",
+      "edit_distance": 1,
+      "reference_characters": 73,
+      "hypothesis_characters": 73,
+      "character_error_rate": 0.0137,
+      "processing_seconds": 10.2412
+    },
+    {
+      "id": "corp-13-contacts",
+      "image_path": "images/corp-13-contacts.png",
+      "document_class": "contact_sheet",
+      "edit_distance": 4,
+      "reference_characters": 92,
+      "hypothesis_characters": 88,
+      "character_error_rate": 0.0435,
+      "processing_seconds": 10.136
+    },
+    {
+      "id": "corp-14-finance",
+      "image_path": "images/corp-14-finance.png",
+      "document_class": "finance_form",
+      "edit_distance": 0,
+      "reference_characters": 104,
+      "hypothesis_characters": 104,
+      "character_error_rate": 0.0,
+      "processing_seconds": 10.0904
+    },
+    {
+      "id": "corp-15-callback",
+      "image_path": "images/corp-15-callback.png",
+      "document_class": "handwritten_callback_note",
+      "edit_distance": 0,
+      "reference_characters": 54,
+      "hypothesis_characters": 54,
+      "character_error_rate": 0.0,
+      "processing_seconds": 13.3444
+    },
+    {
+      "id": "corp-16-security",
+      "image_path": "images/corp-16-security.png",
+      "document_class": "security_return_form",
+      "edit_distance": 1,
+      "reference_characters": 81,
+      "hypothesis_characters": 80,
+      "character_error_rate": 0.0123,
+      "processing_seconds": 13.2178
+    },
+    {
+      "id": "corp-17-fax",
+      "image_path": "images/corp-17-fax.png",
+      "document_class": "fax_cover",
+      "edit_distance": 1,
+      "reference_characters": 82,
+      "hypothesis_characters": 82,
+      "character_error_rate": 0.0122,
+      "processing_seconds": 9.9548
+    },
+    {
+      "id": "corp-18-training",
+      "image_path": "images/corp-18-training.png",
+      "document_class": "attendance_sheet",
+      "edit_distance": 2,
+      "reference_characters": 79,
+      "hypothesis_characters": 79,
+      "character_error_rate": 0.0253,
+      "processing_seconds": 10.9403
+    },
+    {
+      "id": "corp-19-handover",
+      "image_path": "images/corp-19-handover.png",
+      "document_class": "asset_handover",
+      "edit_distance": 1,
+      "reference_characters": 97,
+      "hypothesis_characters": 97,
+      "character_error_rate": 0.0103,
+      "processing_seconds": 9.9832
+    },
+    {
+      "id": "corp-20-emergency",
+      "image_path": "images/corp-20-emergency.png",
+      "document_class": "emergency_contact_card",
+      "edit_distance": 0,
+      "reference_characters": 76,
+      "hypothesis_characters": 76,
+      "character_error_rate": 0.0,
+      "processing_seconds": 7.5902
+    }
+  ]
+}

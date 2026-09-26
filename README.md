@@ -1,63 +1,117 @@
 # GDPR Omni-Scanner
 
-CM3070 student project: a local English-language tool that highlights possible personal-data exposure for human review.
+CM3070 final project: an offline-first English-language tool that highlights possible personal-data exposure for human review across text, document images and audio.
 
-It does **not** determine GDPR compliance and does not provide legal advice.
+The application produces an explainable exposure indicator. It does **not** determine GDPR compliance and does not provide legal advice.
 
-## Current build: v0.7.0
+## Current release
 
-Version 0.7.0 is the final assessed CLI build. Text, audio and image evaluation are complete. This release freezes the application features, validates export and failure paths, tests the exposure-score boundaries, and supplies a repeatable Windows regression script.
+Version `0.7.0` is the frozen final project build.
 
-Implemented:
+Supported inputs:
 
-- direct text and UTF-8 `.txt` input;
-- PNG/JPG printed English document-image input;
-- WAV/MP3 English speech input;
-- Tesseract English OCR feeding the same detection and scoring pipeline;
-- Whisper `tiny.en` CPU transcription feeding the same pipeline;
-- spaCy `en_core_web_sm` name/location recognition;
-- deterministic email, phone, IP address, IBAN and payment-card detection;
-- an explainable 0-100 exposure indicator;
-- terminal output plus JSON and CSV export;
-- unit and integration tests.
-- a reproducible labelled-text precision/recall/F1 evaluation command.
-- a deterministic local tool for selecting a traceable Enron pilot subset.
-- Windows extended-path handling for the corpus's trailing-period filenames.
-- a local machine-assisted annotation command with validation and automatic backup.
-- a word-error-rate evaluator for Whisper reference transcripts;
-- optional `tiny.en`/`base.en` evaluation comparison with elapsed processing time.
-- a character-error-rate evaluator for Tesseract OCR;
-- deterministic preparation of 20-30 FUNSD test documents with provenance hashes.
-- a supplied 20-image controlled corporate set with 69 exact fictional labels;
-- end-to-end image OCR plus finding precision/recall/F1 evaluation;
-- an optional EasyOCR 1.7.2 comparison adapter.
-- validated JSON/CSV export paths and readable missing/unsupported/corrupt-file errors;
-- automated tests for every exposure-score band boundary;
-- final Windows regression, offline-runtime and distribution-integrity instructions.
+| Input | Processing |
+|---|---|
+| Direct text | Analysed directly |
+| UTF-8 `.txt` | Local text analysis |
+| `.png`, `.jpg`, `.jpeg` | Tesseract OCR followed by text analysis |
+| `.wav`, `.mp3` | Whisper `tiny.en` transcription followed by text analysis |
 
-The three pretrained models are integrated: spaCy for text entities, Tesseract for document-image OCR and Whisper for speech transcription. Tesseract and Whisper convert their inputs to text, then spaCy and deterministic detectors analyse that text.
+The application uses:
 
-## Start here
+- spaCy `en_core_web_sm` for person and location recognition;
+- deterministic detectors for email addresses, phone numbers, IP addresses, IBANs and payment-card numbers;
+- Tesseract for local English OCR;
+- Whisper `tiny.en` for local English speech transcription;
+- an explainable 0-100 personal-data exposure indicator;
+- optional JSON and CSV export;
+- automated unit and integration tests.
 
-Follow [SETUP_WINDOWS.md](SETUP_WINDOWS.md) exactly. The short version after setup is:
+## Architecture
+
+All supported input types converge on a common text-analysis pipeline.
+
+```text
+Text ------------------------\
+                              \
+Image -> Tesseract OCR --------> text -> detectors -> exposure indicator -> output/export
+                              /
+Audio -> Whisper transcription/
+```
+
+Named entities are detected using spaCy. Structured identifiers are detected using deterministic rules and validation where appropriate, including MOD-97 validation for IBANs and the Luhn algorithm for payment-card candidates.
+
+Tesseract and Whisper are used only to convert image and audio inputs into text. The same downstream detection and scoring implementation is then reused for all three modalities.
+
+## Setup
+
+See [SETUP_WINDOWS.md](SETUP_WINDOWS.md) for the complete Windows installation procedure.
+
+After setup, activate the project environment:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Check the installed application version:
+
+```powershell
+gdpr-scan --version
+```
+
+## Example scans
+
+### Text
 
 ```powershell
 gdpr-scan --file sample_data\synthetic_text.txt
 ```
 
-Scan the supplied synthetic document image:
+Finding values are masked by default.
+
+To display the supplied synthetic values:
 
 ```powershell
-gdpr-scan --file sample_data\synthetic_document.png --show-values --show-extracted-text
+gdpr-scan --file sample_data\synthetic_text.txt --show-values
 ```
 
-Scan the supplied synthetic speech sample:
+### Document image
 
 ```powershell
-gdpr-scan --file sample_data\synthetic_speech.wav --show-values --show-extracted-text
+gdpr-scan --file sample_data\synthetic_document.png `
+  --show-values `
+  --show-extracted-text
 ```
 
-Export a scan:
+The image is processed with local Tesseract OCR before the extracted text enters the normal detection pipeline.
+
+### Audio
+
+```powershell
+gdpr-scan --file sample_data\synthetic_speech.wav `
+  --show-values `
+  --show-extracted-text
+```
+
+The audio is transcribed with Whisper `tiny.en` on the CPU before the transcript enters the normal detection pipeline.
+
+MP3 input is also supported:
+
+```powershell
+gdpr-scan --file sample_data\synthetic_speech.mp3 `
+  --show-values `
+  --show-extracted-text
+```
+
+### Direct text
+
+```powershell
+gdpr-scan --text "Alex Morgan can be reached at alex@example.test"
+```
+
+## Export
+
+Results are not written to disk unless an export path is supplied.
 
 ```powershell
 gdpr-scan --file sample_data\synthetic_text.txt `
@@ -66,91 +120,116 @@ gdpr-scan --file sample_data\synthetic_text.txt `
   --show-values
 ```
 
-Run the tests:
+JSON contains the full scan result, including the exposure assessment and model information. CSV contains the individual findings.
+
+## Tests
+
+Run the automated test suite with:
 
 ```powershell
 python -m pytest
 ```
 
-Validate the text evaluation harness:
+The tests cover detection, validation, OCR and audio integration, evaluation metrics, file routing, exports, error handling and exposure-score boundaries.
+
+A complete target-machine regression can also be run with:
 
 ```powershell
-gdpr-evaluate-text --dataset evaluation\sample_text_cases.jsonl `
-  --json-out evaluation\results\sample_text_metrics.json
+powershell -ExecutionPolicy Bypass -File .\final_windows_regression.ps1
 ```
 
-The included four-case dataset validates the harness only. It is deliberately too small to support a formal result and is separate from the completed Enron pilot below.
+## Evaluation
 
-The completed 10-message Enron pilot contains 115 model-assisted, human-corrected reference occurrences. It produced micro precision `0.8571`, recall `0.8870` and F1 `0.8718`. See `evaluation\enron\TEXT_EVALUATION_REPORT.md` for the full method, per-type results and limitations. This small result is not a compliance or general-accuracy claim.
+The project uses separate evaluation approaches for text, audio and document images.
 
-Validate the audio evaluation harness with the supplied synthetic WAV file:
+### Text
 
-```powershell
-gdpr-evaluate-audio --dataset evaluation\audio\sample_audio_cases.jsonl `
-  --json-out evaluation\results\sample_audio_metrics.json
-```
+A deterministic 10-message Enron pilot contained 115 model-assisted, human-corrected supported finding occurrences.
 
-The included audio manifest validates WER calculation and Whisper integration only. The completed five-clip AMI pilot produced WER `0.2333` on 90 reference words. Follow `evaluation\audio\AMI_V051_WINDOWS_GUIDE.md` for the final three-input model comparison.
+The scanner produced:
 
-The final comparison is complete. On the same 181.15 seconds of AMI speech, `tiny.en` produced WER `0.2437` in 8.56 seconds and `base.en` produced WER `0.2708` in 12.36 seconds. `tiny.en` is retained as the final CPU model because it was both more accurate and faster on this controlled sample.
+- true positives: `102`;
+- false positives: `17`;
+- false negatives: `13`;
+- micro precision: `0.8571`;
+- micro recall: `0.8870`;
+- micro F1: `0.8718`.
 
-Validate the image evaluation harness:
+See [evaluation/enron/TEXT_EVALUATION_REPORT.md](evaluation/enron/TEXT_EVALUATION_REPORT.md).
 
-```powershell
-gdpr-evaluate-image --dataset evaluation\image\sample_image_cases.jsonl `
-  --json-out evaluation\results\sample_image_metrics.json
-```
+### Audio
 
-The formal image evaluation uses 25 real noisy scanned forms from the FUNSD
-test split. Follow `evaluation\image\FUNSD_WINDOWS_GUIDE.md`. FUNSD adds
-reference text annotations to forms selected from RVL-CDIP, allowing CER to be
-calculated without manually transcribing every page.
+A five-clip AMI pilot produced a Whisper `tiny.en` word error rate of `0.2333` across 90 reference words.
 
-FUNSD evaluation is complete at CER `0.3868`. Version 0.6.1 added a separate
-20-image controlled set covering badges, handwritten-style notes, photographed
-paper and corporate forms. Its build-environment Tesseract baseline produced
-CER `0.1064` and downstream finding F1 `0.7840`. Follow
-`evaluation\image\IMAGE_EVALUATION_REPORT.md` for the completed target-Windows
-Tesseract/EasyOCR comparison and its limitations. The preparation guides are
-retained as reproducibility evidence, not as unfinished instructions.
+A separate controlled comparison used 181.15 seconds of AMI speech:
 
-After separately downloading and extracting the official Enron corpus, prepare the private pilot file:
+| Model | WER | Processing time |
+|---|---:|---:|
+| `tiny.en` | 0.2437 | 8.56 s |
+| `base.en` | 0.2708 | 12.36 s |
 
-```powershell
-gdpr-prepare-enron --corpus C:\datasets\enron\maildir `
-  --out evaluation_private\enron_pilot_unlabelled.jsonl --limit 20
-```
+`tiny.en` was retained for the final application because it produced both lower WER and shorter processing time on this fixed CPU comparison.
 
-Follow `evaluation\enron\ANNOTATION_GUIDE.md`. The evaluator refuses unlabelled cases, and `evaluation_private` is excluded from the project archive.
+See [evaluation/audio/AMI_EVALUATION_REPORT.md](evaluation/audio/AMI_EVALUATION_REPORT.md).
 
-Review a single case using suggestions from the local scanner:
+### Images
 
-```powershell
-gdpr-annotate-enron --dataset evaluation_private\enron_pilot_unlabelled.jsonl --case 2 --assisted
-```
+The formal external OCR evaluation used 25 FUNSD test documents.
 
-Accept correct suggestions by type, reject false positives, and add any values the scanner missed. This last check is required for recall. The command displays private email text in the local terminal; do not screenshot or share that terminal while the text is visible.
+Tesseract produced an aggregate character error rate of `0.3868`.
+
+A separate 20-image controlled synthetic set was used to measure both OCR and downstream personal-data detection. On the target Windows environment, Tesseract produced:
+
+- OCR CER: `0.1039`;
+- finding precision: `0.8929`;
+- finding recall: `0.7246`;
+- finding F1: `0.8000`;
+- end-to-end processing time: `11.05` seconds.
+
+EasyOCR produced lower OCR error on the same controlled images but weaker downstream finding F1 and substantially longer processing time. Tesseract was therefore retained as the final application OCR engine.
+
+See [evaluation/image/IMAGE_EVALUATION_REPORT.md](evaluation/image/IMAGE_EVALUATION_REPORT.md).
+
+These are small project evaluations and must not be interpreted as population-level accuracy or evidence of legal compliance.
 
 ## Privacy behaviour
 
-- Scan content is processed locally after installation and the one-time model downloads.
-- The application does not upload scan content. Whisper may download `tiny.en` if its local cache is missing.
-- Results are not saved unless an export option is supplied.
-- Finding values are masked in terminal output unless `--show-values` is used.
-- Use only synthetic or properly authorised personal-data examples.
+- Scan content is processed locally after software and required model files have been installed.
+- The application does not upload scan content.
+- Whisper may download `tiny.en` if the model is not already present in the local cache.
+- Results are not persisted unless an export option is explicitly supplied.
+- Finding values are masked in normal terminal output unless `--show-values` is used.
+- Evaluation material containing real data is kept outside the public repository.
+- Supplied demonstration files contain synthetic or fictional data.
 
-## Final verification and supporting records
+## Exposure indicator
 
-- Run `powershell -ExecutionPolicy Bypass -File .\final_windows_regression.ps1` for the successful target-machine regression sequence. The automated tests and supplied synthetic inputs remain the authoritative reproducible checks.
-- See [SCORING.md](SCORING.md) for the complete exposure-indicator calculation and tested boundaries.
-- See [LICENSES_AND_ATTRIBUTION.md](LICENSES_AND_ATTRIBUTION.md) for primary software/model licences and dataset handling requirements.
+The exposure indicator is deliberately simple and explainable.
+
+Different finding types contribute different fixed weights. Repeated copies of the same normalised value count once, per-type contributions are capped, and the overall score is capped at 100.
+
+The complete calculation and score bands are documented in [SCORING.md](SCORING.md).
+
+The indicator is a prioritisation heuristic. It is not a probability, legal assessment or GDPR-compliance decision.
 
 ## Current limitations
 
 - English only.
 - One text input at a time.
-- Possible false positives and false negatives.
-- The score is a transparent prioritisation heuristic, not a probability or legal assessment.
-- Audio is CPU-only and intended for short, clear English recordings; the first run loads the model and may be slower.
-- OCR is intended primarily for printed English; the controlled handwritten-style cases are limitation tests, not general handwriting support.
-- The completed Enron, AMI and FUNSD results and the controlled image set are pilots and must not be generalised.
+- False positives and false negatives remain possible.
+- spaCy entity recognition is contextual and can misclassify names or locations.
+- OCR is intended primarily for printed English documents.
+- Handwritten-style controlled examples are limitation tests rather than evidence of general handwriting support.
+- Audio processing is CPU-only and intended primarily for short, clear English recordings.
+- Audio performance may differ substantially for noisy, distant or accented speech.
+- The evaluation datasets and sample sizes are limited.
+- The exposure indicator is a project-designed heuristic rather than a legal or statistical risk model.
+
+## Additional documentation
+
+- [SETUP_WINDOWS.md](SETUP_WINDOWS.md) — Windows installation and verification
+- [SCORING.md](SCORING.md) — exposure-indicator calculation
+- [LICENSES_AND_ATTRIBUTION.md](LICENSES_AND_ATTRIBUTION.md) — external software, models and datasets
+- [evaluation/enron/TEXT_EVALUATION_REPORT.md](evaluation/enron/TEXT_EVALUATION_REPORT.md) — text evaluation
+- [evaluation/audio/AMI_EVALUATION_REPORT.md](evaluation/audio/AMI_EVALUATION_REPORT.md) — audio evaluation
+- [evaluation/image/IMAGE_EVALUATION_REPORT.md](evaluation/image/IMAGE_EVALUATION_REPORT.md) — image evaluation

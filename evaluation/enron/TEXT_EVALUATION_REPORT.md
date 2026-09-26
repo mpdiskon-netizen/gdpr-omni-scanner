@@ -1,21 +1,45 @@
-# Enron text-detection evaluation milestone
+# Enron text-detection evaluation record
 
-## Report-safe result
+## Summary
 
-On a deterministic pilot of 10 Enron email messages containing 115 model-assisted, human-corrected reference occurrences, the scanner produced 102 true positives, 17 false positives and 13 false negatives. Using exact finding-type and normalized-value matching with repeated occurrences counted separately, micro precision was **0.8571**, recall was **0.8870**, and F1 was **0.8718**.
+A deterministic pilot of 10 Enron email messages was used to evaluate the supported text-detection categories on natural business email.
 
-This is a small prototype evaluation. It does not demonstrate general personal-data detection accuracy and must not be interpreted as evidence of GDPR compliance.
+The reference set contained 115 model-assisted, human-corrected finding occurrences.
+
+The scanner produced:
+
+| Measure | Result |
+|---|---:|
+| True positives | 102 |
+| False positives | 17 |
+| False negatives | 13 |
+| Micro precision | 0.8571 |
+| Micro recall | 0.8870 |
+| Micro F1 | 0.8718 |
+
+This was a small project evaluation. It does not establish general personal-data detection accuracy and must not be interpreted as evidence of GDPR compliance.
 
 ## Method
 
-- Source: the locally downloaded Enron Email Dataset.
+- Source: locally downloaded Enron Email Dataset.
+- Sample size: 10 messages.
 - Selection: deterministic SHA-256 ranking of relative source paths using seed `3070`.
-- Sample: 10 messages.
+- Supported categories only:
+  - `PERSON_NAME`
+  - `LOCATION_REFERENCE`
+  - `EMAIL_ADDRESS`
+  - `PHONE_NUMBER`
+  - `IP_ADDRESS`
+  - `IBAN`
+  - `PAYMENT_CARD_NUMBER`
 - Reference data: 115 supported finding occurrences reviewed locally by one student.
-- Annotation method: model-assisted human correction. Scanner suggestions were accepted or rejected and missed values were added.
-- Matching: exact finding type and normalized value; occurrence-aware.
+- Annotation method: model-assisted human correction.
+- Scanner suggestions could be accepted or rejected.
+- Missed supported values were added manually.
+- Matching: exact finding type and normalised value.
+- Matching was occurrence-aware, so repeated occurrences were counted separately.
 - Metrics: per-type and micro precision, recall and F1.
-- Privacy: raw messages and the labelled JSONL remained in `evaluation_private` and were not included in source archives or screenshots.
+- Raw messages and private labels remained outside the public repository.
 
 ## Results
 
@@ -27,32 +51,55 @@ This is a small prototype evaluation. It does not demonstrate general personal-d
 | Phone number | 2 | 0 | 0 | 1.0000 | 1.0000 | 1.0000 |
 | **Micro overall** | **102** | **17** | **13** | **0.8571** | **0.8870** | **0.8718** |
 
-The 115 reference occurrences comprise 65 email addresses, 1 location reference, 47 person-name occurrences and 2 phone numbers. The scanner emitted 119 predictions across these represented types.
+The 115 reference occurrences comprised:
+
+- 65 email-address occurrences;
+- 1 location-reference occurrence;
+- 47 person-name occurrences;
+- 2 phone-number occurrences.
+
+The scanner emitted 119 predictions across the represented categories.
+
+No IP-address, IBAN or payment-card observations occurred in this pilot. Their implemented behaviour is tested using synthetic unit and integration fixtures instead.
 
 ## Interpretation
 
-- Email detection was the strongest represented category: no false email addresses were produced, although five labelled occurrences were missed.
-- Person-name recognition was useful but imperfect. Twelve predictions were not present in the corrected reference labels and eight labelled names were missed.
-- Location precision was weak because five of six location predictions were not accepted. Only one genuine location occurrence was present, so the result is unstable and should not be generalised.
-- Both phone occurrences were detected, but two examples are far too few to claim general 100% performance.
-- IP addresses, IBANs and payment-card numbers had no represented observations in this pilot. Their implemented behaviour is supported by synthetic unit/integration fixtures rather than this Enron result.
+Email detection was the strongest represented category. No false-positive email addresses were produced, although five labelled email occurrences were missed.
+
+Person-name recognition was less reliable. Twelve predicted names were not present in the corrected reference labels and eight labelled name occurrences were missed.
+
+Location performance cannot be generalised from this sample. Only one labelled location was present, while five additional location predictions were rejected by the reviewer.
+
+Both labelled phone-number occurrences were detected, but two examples are insufficient to support a general performance claim.
+
+The overall micro F1 of `0.8718` therefore describes this particular 10-message pilot rather than expected performance on arbitrary email collections.
 
 ## Threats to validity
 
-1. Ten messages are a small pilot rather than a representative sample of all business email.
-2. The messages were selected reproducibly but were not stratified by finding type.
-3. A single reviewer created the reference labels, so inter-annotator agreement was not measured.
-4. The reviewer saw scanner suggestions. Although incorrect suggestions could be rejected and missed values added, suggestion exposure may have biased what was noticed and may inflate recall.
-5. The type distribution was highly imbalanced, especially for locations and phone numbers.
-6. Exact value matching does not give partial credit for boundary differences.
+1. Ten messages form a small pilot rather than a representative sample of business email.
+2. The deterministic sample was not stratified by finding category.
+3. Only one reviewer created the corrected reference labels.
+4. Inter-annotator agreement was not measured.
+5. The reviewer saw scanner suggestions during annotation. Although false positives could be rejected and missed values added, suggestion exposure may have biased what was noticed.
+6. Finding categories were strongly imbalanced.
+7. Three supported structured-identifier categories were not represented at all.
+8. Exact value matching does not award partial credit for entity-boundary differences.
 
-## Appropriate report claim
+## Interpretation boundary
 
-The result supports the claim that the implemented text stage can identify a useful proportion of supported personal-data occurrences in a small real-email pilot, with particularly strong deterministic email detection and weaker contextual entity recognition. It does not support a claim of complete personal-data discovery, legal compliance or performance on unseen domains.
+The result supports the conclusion that the implemented text stage identified a useful proportion of supported personal-data occurrences in this small real-email pilot.
 
-## Evidence retained
+It also demonstrates that contextual entity recognition was less reliable than deterministic email detection.
 
-- Privacy-safe Windows terminal screenshot showing 10 labelled cases and 115 labels.
-- Privacy-safe Windows evaluator screenshot showing per-type and micro metrics.
-- `evaluation/results/enron_pilot_10_metrics.json` containing scores only.
-- Private labelled JSONL retained locally and excluded from distribution.
+The evaluation does **not** support claims of complete personal-data discovery, legal compliance, population-level accuracy or performance on unseen domains.
+
+## Retained evidence
+
+Privacy-safe project evidence includes:
+
+- the aggregate evaluation result;
+- per-type metrics;
+- `evaluation/results/enron_pilot_10_metrics.json`;
+- source-selection and evaluation code in the repository.
+
+The raw Enron messages and corrected private annotation file are excluded from the public repository.
